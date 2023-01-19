@@ -1,3 +1,6 @@
+
+this is the front end portion to my solar coffee project
+
 # solarcoffeetrue.frontend
 
 ## Project setup
