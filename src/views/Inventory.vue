@@ -57,6 +57,9 @@ import SolarButton from "@/components/SolarButton.vue";
 import NewProductModal from "@/components/modals/NewProductModal.vue";
 import ShipmentModal from "@/components/modals/ShipmentModal.vue";
 import { IShipment } from "@/types/Shipment";
+import { InventoryService } from "@/services/inventory-service";
+
+const inventoryService = new InventoryService();
 
 @Options({
   name: "Inventory",
@@ -106,24 +109,36 @@ export default class Inventory extends Vue {
       return "$ " + number.toFixed(2);
     }
   }
-
+  
   closeModals() {
     this.isShipmentVisible = false;
     this.isNewProductVisible = false;
   }
+
   showNewProductModal() {
     this.isNewProductVisible = true;
   }
+
   showShipmentModal() {
     this.isShipmentVisible = true;
   }
+
   saveNewProduct(newProduct: IProduct) {
     console.log("saveNewProduct:");
     console.log(newProduct);
   }
+
   saveNewShipment(shipment: IShipment) {
     console.log("saveNewShipment:");
     console.log(shipment);
+  }
+
+  async initialize() {
+    this.inventory = await inventoryService.getInventory();
+  }
+
+  async created() {
+    await this.initialize();
   }
 }
 </script>
