@@ -57,6 +57,10 @@
         close(){
             this.$emit('close');
         }
+
+        save(){
+            this.$emit('save:product', this.selectedProduct);
+        }
     }
 </script>
 

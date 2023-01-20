@@ -45,7 +45,7 @@
                 </td>
             </tr>
         </table>
-        <new-product-modal v-if="isNewProductVisible"/>
+        <new-product-modal v-if="isNewProductVisible" @close="closeModals"/>
         <shipment-modal v-if="isShipmentVisible" :inventory="inventory" @close="closeModals"/>
     </div>
 </template>
@@ -106,7 +106,7 @@
             }
         }
 
-        closeModal(){
+        closeModals(){
             this.isShipmentVisible = false;
             this.isNewProductVisible = false;
         }
