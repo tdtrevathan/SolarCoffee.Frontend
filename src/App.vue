@@ -1,26 +1,23 @@
 <template>
-  <div id="app">
     <div class="app-menu">
       <side-menu />
     </div>
     <div class="app-content">
       <router-view />
     </div>
-  </div>
 </template>
 
 <script lang="ts">
-  import {Options,Vue} from 'vue-class-component';
-  import SideMenu from '@/components/SideMenu.vue'
-  @Options({
-    name: 'App',
-    components: { SideMenu }
-  })
+import { Options, Vue } from "vue-class-component";
+import SideMenu from "@/components/SideMenu.vue";
+@Options({
+  name: "App",
+  components: { SideMenu },
+})
 export default class App extends Vue {}
 </script>
 <style lang="scss">
-
-@import '@/scss/global.scss';
+@import "@/scss/global.scss";
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -28,13 +25,13 @@ export default class App extends Vue {}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  display:flex;
+  display: flex;
 
-  .app-menu{
+  .app-menu {
     position: fixed;
   }
 
-  .app-content{
+  .app-content {
     padding: 1.2rem;
     width: 90%;
     margin: 1rem auto 1rem $menu-width;
@@ -45,10 +42,10 @@ export default class App extends Vue {}
 * {
   margin: 0;
 }
-a{
+a {
   text-decoration: none;
 }
-hr{
+hr {
   border: 1px solid #eee;
   margin: 1rem 0;
 }

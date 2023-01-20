@@ -1,4 +1,4 @@
-export interface IShipment{
-    productId: number;
-    adjustment: number;
+export interface IShipment {
+  productId: number;
+  adjustment: number;
 }
