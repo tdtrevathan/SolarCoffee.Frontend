@@ -28,10 +28,10 @@
 <script lang="ts">
     import { Options, Vue } from "vue-class-component";
     import SolarButton from "@/components/SolarButton.vue";
-    import SolarModal from "@/modals/SolarModal.vue";
+    import SolarModal from "@/components/modals/SolarModal.vue";
     import { Prop } from "vue-property-decorator";
     import { IProduct, IProductInventory } from "@/types/Product";
-
+    import { IShipment } from "@/types/Shipment";
     @Options({
         name: 'ShipmentModal',
         components: { SolarButton, SolarModal }
@@ -59,7 +59,12 @@
         }
 
         save(){
-            this.$emit('save:product', this.selectedProduct);
+            let shipment: IShipment = {
+                productId: this.selectedProduct.id,
+                adjustment: this.qtyReceived
+            };
+
+            this.$emit('save:shipment', shipment)
         }
     }
 </script>

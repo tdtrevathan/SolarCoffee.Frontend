@@ -4,14 +4,13 @@
             Inventory Dashboard
         </h1>
         <hr/>
-
-        <div class="inventory actions">
+        <div class="inventory-actions">
             <solar-button @click.native="showNewProductModal" id="addNewBtn">
-            Add New Item
-        </solar-button>
-        <solar-button @click.native="showShipmentModal" id="recieveShipmentBtn">
-            Reveive Shipment
-        </solar-button>
+                Add New Item
+            </solar-button>
+            <solar-button @click.native="showShipmentModal" id="recieveShipmentBtn">
+                Reveive Shipment
+            </solar-button>
         </div>
 
         <table id="inventoryTable" Class="table">
@@ -45,19 +44,22 @@
                 </td>
             </tr>
         </table>
-        <new-product-modal v-if="isNewProductVisible" @close="closeModals"/>
-        <shipment-modal v-if="isShipmentVisible" :inventory="inventory" @close="closeModals"/>
+        <new-product-modal v-if="isNewProductVisible" @save:product="saveNewProduct" @close="closeModals"/>
+        <shipment-modal v-if="isShipmentVisible" :inventory="inventory" @save:shipment="saveNewShipment" @close="closeModals"/>
     </div>
 </template>
 
 <script lang="ts">
     import {Options, Vue} from 'vue-class-component';
-    import {IProductInventory} from '@/types/Product';
-    import SolarButton from "@/components/SolarButton.vue";
+    import {IProductInventory, IProduct} from '@/types/Product';
+    import SolarButton from '@/components/SolarButton.vue';
+    import NewProductModal from '@/components/modals/NewProductModal.vue';
+    import ShipmentModal from '@/components/modals/ShipmentModal.vue';
+    import {IShipment} from '@/types/Shipment';
 
     @Options({
         name: "Inventory",
-        components: {}
+        components: { SolarButton, NewProductModal, ShipmentModal }
     })
 
     export default class Inventory extends Vue{
@@ -111,10 +113,18 @@
             this.isNewProductVisible = false;
         }
         showNewProductModal(){
-
+            this.isNewProductVisible = true;
         }
         showShipmentModal(){
-
+            this.isShipmentVisible = true;
+        }
+        saveNewProduct(newProduct: IProduct){
+            console.log("saveNewProduct:");
+            console.log(newProduct);
+        }
+        saveNewShipment(shipment: IShipment){
+            console.log("saveNewShipment:");
+            console.log(shipment);
         }
     }
 </script>

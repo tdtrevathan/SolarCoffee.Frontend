@@ -4,7 +4,7 @@
             Add New Product
         </template>
         <template v-slot:body>
-            <ul>
+            <ul class="newProduct">
                 <li>
                     <label for="isTaxable">Is this product taxable?</label>
                     <input type="checkbox" id="isTaxable" v-model="newProduct.isTaxable">
@@ -37,7 +37,7 @@
 <script lang="ts">
     import { Options, Vue } from "vue-class-component";
     import SolarButton from "@/components/SolarButton.vue";
-    import SolarModal from "@/modals/SolarModal.vue";
+    import SolarModal from "@/components/modals/SolarModal.vue";
     import { Prop } from "vue-property-decorator";
     import { IProduct, IProductInventory } from "@/types/Product";
 
@@ -74,5 +74,24 @@
 </script>
 
 <style scoped lang="scss">
-    
+    .newProduct{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        input{
+            width: 100%;
+            height: 1.8rem;
+            margin-bottom: 1.2rem;
+            font-size: 1.1rem;
+            line-height: 1.3rem;
+            padding: 0.2rem;
+            color: #555;
+        }
+        label{
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+    }
 </style>
