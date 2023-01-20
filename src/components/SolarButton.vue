@@ -1,7 +1,9 @@
 <template>
     <div class="btn-link">
-        <button @click="visitRoute" 
-        :class="['solar-button', {'full-width': isFullWidth }]">
+        <button v-if="link" @click="visitRoute" :class="['solar-button', {'full-width': isFullWidth }]" type:="button">
+            <slot></slot>
+        </button>
+        <button v-else @click="onClick" :class="['solar-button', {'full-width': isFullWidth }]" type:="button">
             <slot></slot>
         </button>
     </div>
@@ -21,11 +23,16 @@ import {Prop} from 'vue-property-decorator'
 
         @Prop({required: false, type:String })
         link?: string;
+        
         @Prop({ required: false, type: Boolean, default: false })
         isFullWidth?: boolean;
 
         visitRoute(){
             this.$router.push(this.link!);
+        }
+
+        onClick(){
+            this.$emit("button:click");
         }
     }
 </script>
@@ -47,7 +54,6 @@ import {Prop} from 'vue-property-decorator'
         border-bottom: 2px solid darken($solar-blue, 20%);
         border-radius: 3px;
         
-        
         &:hover {
             background: lighten($solar-blue, 20%);
             transition: background-color 0.5s;
@@ -62,7 +68,6 @@ import {Prop} from 'vue-property-decorator'
             background: $solar-yellow;
             border-bottom: 2px solid lighten($solar-yellow, 20%);
         }
-        
     }
 
     .full-width{

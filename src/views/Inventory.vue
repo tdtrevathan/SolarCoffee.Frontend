@@ -5,6 +5,15 @@
         </h1>
         <hr/>
 
+        <div class="inventory actions">
+            <solar-button @click.native="showNewProductModal" id="addNewBtn">
+            Add New Item
+        </solar-button>
+        <solar-button @click.native="showShipmentModal" id="recieveShipmentBtn">
+            Reveive Shipment
+        </solar-button>
+        </div>
+
         <table id="inventoryTable" Class="table">
             <tr>
                 <th>Item</th>
@@ -21,28 +30,40 @@
                     {{ item.quantityOnHand }}
                 </td>
                 <td>
-                    {{ item.product.price }}
+                    {{ getPrice(item.product.price) }}
                 </td>
                 <td>
-                    {{ item.product.isTaxable}}
+                    <span v-if="item.product.isTaxable">
+                        Yes
+                    </span>
+                    <span v-else>
+                        No
+                    </span>
                 </td>
-                <div>
+                <td>
                     x
-                </div>
+                </td>
             </tr>
         </table>
+        <new-product-modal v-if="isNewProductVisible"/>
+        <shipment-modal v-if="isShipmentVisible" :inventory="inventory" @close="closeModals"/>
     </div>
 </template>
 
 <script lang="ts">
     import {Options, Vue} from 'vue-class-component';
     import {IProductInventory} from '@/types/Product';
+    import SolarButton from "@/components/SolarButton.vue";
+
     @Options({
         name: "Inventory",
         components: {}
     })
 
     export default class Inventory extends Vue{
+        isNewProductVisible: boolean = false;
+        isShipmentVisible: boolean = false;
+
         inventory: IProductInventory[] = [
             {
                 id:1,
@@ -74,7 +95,27 @@
                 idealQuantity: 500,
                 quantityOnHand: 1000
             },
-        ]
+        ];
+
+        getPrice(number: number){
+            if(isNaN(number)){
+                return '-';
+            }
+            else{
+                return '$ ' + number.toFixed(2);
+            }
+        }
+
+        closeModal(){
+            this.isShipmentVisible = false;
+            this.isNewProductVisible = false;
+        }
+        showNewProductModal(){
+
+        }
+        showShipmentModal(){
+
+        }
     }
 </script>
 
