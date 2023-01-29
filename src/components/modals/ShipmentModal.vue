@@ -10,7 +10,7 @@
         </option>
       </select>
       <label for="qtyReceived">Quantity Received:</label>
-      <input type="number" id="qtyReceived" v-modal="qtyReceived" />
+      <input type="number" id="qtyReceived" v-model="qtyReceived" />
     </template>
     <template v-slot:footer>
       <solar-button
@@ -56,7 +56,6 @@ export default class ShipmentModal extends Vue {
     price: 0,
     isArchived: false,
   };
-
   qtyReceived = 0;
 
   close() {
@@ -64,6 +63,7 @@ export default class ShipmentModal extends Vue {
   }
 
   save() {
+    console.log(this.qtyReceived)
     let shipment: IShipment = {
       productId: this.selectedProduct.id,
       adjustment: this.qtyReceived,

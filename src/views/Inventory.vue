@@ -19,6 +19,7 @@
         <th>Taxable</th>
         <th>Delete</th>
       </tr>
+
       <tr v-for="item in inventory" :key="item.id">
         <td>
           {{ item.product.name }}
@@ -58,6 +59,7 @@ import NewProductModal from "@/components/modals/NewProductModal.vue";
 import ShipmentModal from "@/components/modals/ShipmentModal.vue";
 import { IShipment } from "@/types/Shipment";
 import { InventoryService } from "@/services/inventory-service";
+import { createDOMCompilerError } from "@vue/compiler-dom";
 
 const inventoryService = new InventoryService();
 
@@ -68,39 +70,8 @@ const inventoryService = new InventoryService();
 export default class Inventory extends Vue {
   isNewProductVisible = false;
   isShipmentVisible = false;
-
-  inventory: IProductInventory[] = [
-    {
-      id: 1,
-      product: {
-        id: 1,
-        name: "Wurther's origionals",
-        description: "Canidies for all occasions",
-        price: 5,
-        createdOn: new Date(),
-        updatedOn: new Date(),
-        isTaxable: true,
-        isArchived: false,
-      },
-      idealQuantity: 5,
-      quantityOnHand: 2,
-    },
-    {
-      id: 2,
-      product: {
-        id: 2,
-        name: "Mug",
-        description: "For coffee",
-        price: 2,
-        createdOn: new Date(),
-        updatedOn: new Date(),
-        isTaxable: true,
-        isArchived: false,
-      },
-      idealQuantity: 500,
-      quantityOnHand: 1000,
-    },
-  ];
+  
+  inventory: IProductInventory[] = [];
 
   getPrice(number: number) {
     if (isNaN(number)) {
@@ -128,9 +99,10 @@ export default class Inventory extends Vue {
     console.log(newProduct);
   }
 
-  saveNewShipment(shipment: IShipment) {
-    console.log("saveNewShipment:");
-    console.log(shipment);
+  async saveNewShipment(shipment: IShipment) {
+    await inventoryService.updateInventoryQuantity(shipment);
+    this.isShipmentVisible = false;
+    await this.initialize();
   }
 
   async initialize() {
