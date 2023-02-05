@@ -63,12 +63,11 @@ export default class ShipmentModal extends Vue {
   }
 
   save() {
-    console.log(this.qtyReceived)
     let shipment: IShipment = {
       productId: this.selectedProduct.id,
       adjustment: this.qtyReceived,
     };
-
+    console.log(this.selectedProduct.id);
     this.$emit("save:shipment", shipment);
   }
 }

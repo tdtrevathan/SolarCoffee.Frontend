@@ -24,7 +24,9 @@
         <td>
           {{ item.product.name }}
         </td>
-        <td>
+        <td v-bind:class="
+        `${getColorForQauntityDisparity(item)}`
+        ">
           {{ item.quantityOnHand }}
         </td>
         <td>
@@ -34,7 +36,10 @@
           <span v-if="item.product.isTaxable"> Yes </span>
           <span v-else> No </span>
         </td>
-        <td>x</td>
+        <td>
+          <i class="fa-regular fa-circle-xmark product-archive" 
+          @click="archiveProduct(item.product.id)"></i>
+        </td>
       </tr>
     </table>
     <new-product-modal
@@ -59,9 +64,10 @@ import NewProductModal from "@/components/modals/NewProductModal.vue";
 import ShipmentModal from "@/components/modals/ShipmentModal.vue";
 import { IShipment } from "@/types/Shipment";
 import { InventoryService } from "@/services/inventory-service";
-import { createDOMCompilerError } from "@vue/compiler-dom";
+import {ProductService} from "@/services/product-service";
 
 const inventoryService = new InventoryService();
+const productService = new ProductService();
 
 @Options({
   name: "Inventory",
@@ -80,6 +86,17 @@ export default class Inventory extends Vue {
       return "$ " + number.toFixed(2);
     }
   }
+
+  async archiveProduct(productId: number){
+    await productService.archive(productId)
+    await this.initialize();
+  }
+
+  async saveNewProduct(newProduct: IProduct){
+    await productService.save(newProduct);
+    this.isNewProductVisible = false;
+    await this.initialize();
+  }
   
   closeModals() {
     this.isShipmentVisible = false;
@@ -94,9 +111,17 @@ export default class Inventory extends Vue {
     this.isShipmentVisible = true;
   }
 
-  saveNewProduct(newProduct: IProduct) {
-    console.log("saveNewProduct:");
-    console.log(newProduct);
+  getColorForQauntityDisparity(product: IProductInventory) {
+
+    let significantDifference = 8
+
+    if(product.quantityOnHand <= 0){
+      return "red";
+    }
+    if(Math.abs(product.idealQuantity - product.quantityOnHand) > significantDifference) {
+      return "yellow"
+    }
+    return "green"
   }
 
   async saveNewShipment(shipment: IShipment) {
@@ -115,4 +140,33 @@ export default class Inventory extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+  @import "@/scss/global.scss";
+
+  .green {
+    font-weight: bold;
+    color: $solar-green;
+  }
+
+  .yellow {
+    font-weight: bold;
+    color: $solar-yellow;
+  }
+
+  .red {
+    font-weight: bold;
+    color: $solar-red;
+  }
+
+  .inventory-actions{
+    display: flex;
+    margin-bottom: 0.8rem;
+  }
+
+  .product-archive{
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: $solar-red;
+  }
+</style>

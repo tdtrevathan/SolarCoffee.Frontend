@@ -13,7 +13,11 @@
         </li>
         <li>
           <label for="productName">Name</label>
-          <input type="text" id="productName" v-mdoel="newProduct.name" />
+          <input 
+          type="text" 
+          id="productName" 
+          v-model="newProduct.name" 
+          />
         </li>
         <li>
           <label for="productDesc">Description</label>
